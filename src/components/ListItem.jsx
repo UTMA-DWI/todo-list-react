@@ -14,7 +14,7 @@ function ListItem({ text, onDelete }) {
   return (
     <li
       className={`bg-indigo-800 p-2 ${
-        checked ? "text-green-400 line-through" : null
+        checked ? "text-green-400 line-through" : "text-white"
       }`}
     >
       {text} <input type="checkbox" checked={checked} onChange={handleCheck} />

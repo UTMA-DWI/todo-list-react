@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// eslint-disable-next-line react/prop-types
 function ListItem({ text, onDelete }) {
   const [checked, setChecked] = useState(false);
 
@@ -13,7 +14,7 @@ function ListItem({ text, onDelete }) {
   };
   return (
     <li
-      className={`bg-indigo-800 p-2 ${
+      className={`rounded-md bg-indigo-800 p-2 ${
         checked ? "text-green-400 line-through" : "text-white"
       }`}
     >

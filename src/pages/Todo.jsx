@@ -20,8 +20,15 @@ function Todo() {
   // });
 
   useEffect(() => {
-    console.log("useEffect", todos);
-  }, [todos]);
+    const getTodos = () => {
+      fetch("https://rickandmortyapi.com/api/character")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+    };
+    getTodos();
+  }, []);
 
   // Add a new todo
   const addTodo = () => {

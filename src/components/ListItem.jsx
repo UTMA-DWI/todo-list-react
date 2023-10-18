@@ -13,6 +13,11 @@ function ListItem({ text, onDelete }) {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("checked", checked);
+    if (checked) alert("Check");
+  }, [checked]);
+
   const handleCheck = () => {
     setChecked(!checked);
   };

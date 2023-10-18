@@ -1,5 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ListItem from "../components/ListItem";
+import { v4 as uuidv4 } from "uuid";
+import CompletedItem from "../components/CompletedItem";
 
 function Todo() {
   // useState -> [state, setState]
@@ -9,9 +11,34 @@ function Todo() {
   // Add a new todo
   const addTodo = () => {
     const todoValue = inputRef.current.value;
-    console.log(todoValue);
-    setTodos([todoValue, ...todos]);
+
+    const newTodo = { name: todoValue, id: uuidv4(), checked: false };
+
+    setTodos([newTodo, ...todos]);
+    inputRef.current.value = "";
   };
+
+  const checkTodo = (id) => {
+    // find todo by id
+    const todo = todos.find((item) => item.id === id);
+    // set checked to true
+    todo.checked = !todo.checked;
+    // setTodos
+    setTodos([...todos]);
+  };
+
+  const deleteTodo = (id) => {
+    // delete todo by id
+    // filter items different to given id
+    setCompletedTodos([
+      todos.find((item) => item.id === id),
+      ...completedTodos,
+    ]);
+    setTodos(todos.filter((item) => item.id !== id));
+  };
+
+  const pendingTodos = todos.filter((item) => !item.checked);
+  const completedTodos = todos.filter((item) => item.checked);
 
   return (
     <div className="flex flex-col gap-2">
@@ -29,8 +56,28 @@ function Todo() {
         </button>
       </div>
       <ul className="flex flex-col gap-2">
-        {todos.map((value, index) => {
-          return <ListItem key={index} text={value} />;
+        {pendingTodos.map((item) => {
+          return (
+            <ListItem
+              key={item.id}
+              text={item.name}
+              onChecked={() => checkTodo(item.id)}
+              onDelete={() => deleteTodo(item.id)}
+              checked={item.checked}
+            />
+          );
+        })}
+      </ul>
+      <h2 className="text-3xl font-bold ">Completed todos</h2>
+      <ul className="flex flex-col gap-2">
+        {completedTodos.map((item) => {
+          return (
+            <CompletedItem
+              key={item.id}
+              text={item.name}
+              onRestore={() => checkTodo(item.id)}
+            />
+          );
         })}
       </ul>
     </div>

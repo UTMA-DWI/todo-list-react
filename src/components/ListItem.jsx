@@ -1,8 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // eslint-disable-next-line react/prop-types
 function ListItem({ text, onDelete }) {
   const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    // init component
+    console.log("Init");
+    return () => {
+      // destroy component
+      console.log("cleanup");
+    };
+  }, []);
 
   const handleCheck = () => {
     setChecked(!checked);

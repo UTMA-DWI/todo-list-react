@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ListItem from "../components/ListItem";
 import { v4 as uuidv4 } from "uuid";
 
@@ -6,14 +6,31 @@ function Todo() {
   // useState -> [state, setState]
   const [todos, setTodos] = useState([]);
   const inputRef = useRef(null);
+  // DependencyList is null exec once
+  // useEffect(() => {
+  //   // fetch api
+  //   // initialize connection
+  //   console.log("useEffect");
+  // }, []);
+
+  // without DependencyList exec each time state changes
+  // useEffect(() => {
+  //   // check size of a container
+  //   console.log("useEffect");
+  // });
+
+  useEffect(() => {
+    console.log("useEffect", todos);
+  }, [todos]);
 
   // Add a new todo
   const addTodo = () => {
     const todoValue = inputRef.current.value;
 
     const newTodo = { name: todoValue, id: uuidv4(), checked: false };
-
+    console.log("before", todos);
     setTodos([newTodo, ...todos]);
+    console.log("after", todos);
     inputRef.current.value = "";
   };
 

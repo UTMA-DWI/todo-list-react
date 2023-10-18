@@ -1,20 +1,25 @@
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-function ListItem({ text, onDelete, onChecked, checked }) {
+function ListItem({ text, onDelete }) {
+  const [checked, setChecked] = useState(false);
+
+  const handleCheck = () => {
+    setChecked(!checked);
+  };
   return (
     <li
       className={`flex items-center justify-between rounded-md bg-indigo-800 p-2 ${
         checked ? "text-green-400 line-through" : "text-white"
       }`}
     >
-      <div className="flex gap-2">
-        <input type="checkbox" checked={checked} onChange={onChecked} />
+      <div>
+        <input type="checkbox" checked={checked} onChange={handleCheck} />
         <span>{text}</span>
       </div>
       <button
         onClick={onDelete}
-        className="rounded-md bg-red-500 p-2 text-white hover:bg-red-700"
+        className="rounded-md bg-red-500 p-2 hover:bg-red-700"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

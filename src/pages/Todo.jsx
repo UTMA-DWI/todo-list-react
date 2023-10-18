@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import ListItem from "../components/ListItem";
 import { v4 as uuidv4 } from "uuid";
-import CompletedItem from "../components/CompletedItem";
 
 function Todo() {
   // useState -> [state, setState]
@@ -30,15 +29,8 @@ function Todo() {
   const deleteTodo = (id) => {
     // delete todo by id
     // filter items different to given id
-    setCompletedTodos([
-      todos.find((item) => item.id === id),
-      ...completedTodos,
-    ]);
     setTodos(todos.filter((item) => item.id !== id));
   };
-
-  const pendingTodos = todos.filter((item) => !item.checked);
-  const completedTodos = todos.filter((item) => item.checked);
 
   return (
     <div className="flex flex-col gap-2">
@@ -56,7 +48,7 @@ function Todo() {
         </button>
       </div>
       <ul className="flex flex-col gap-2">
-        {pendingTodos.map((item) => {
+        {todos.map((item) => {
           return (
             <ListItem
               key={item.id}
@@ -68,7 +60,7 @@ function Todo() {
           );
         })}
       </ul>
-      <h2 className="text-3xl font-bold ">Completed todos</h2>
+      {/* <h2 className="text-3xl font-bold ">Completed todos</h2>
       <ul className="flex flex-col gap-2">
         {completedTodos.map((item) => {
           return (
@@ -79,7 +71,7 @@ function Todo() {
             />
           );
         })}
-      </ul>
+      </ul> */}
     </div>
   );
 }

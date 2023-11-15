@@ -1,43 +1,41 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useReducer } from "react";
 import ListItem from "../components/ListItem";
 import { v4 as uuidv4 } from "uuid";
 
+function reducer(state, action) {
+  console.log(action, state);
+  // ACTIONS
+  switch (action.type) {
+    case "ADD_TODO":
+      // CODE...
+      return {
+        ...state,
+        todos: [action.newTodo, ...state.todos],
+      };
+
+    default:
+      throw new Error("That action type do not exist");
+  }
+}
+
+const initialState = {
+  todos: [{ name: "Hola mundo", id: 1, checked: false }],
+};
+
 function Todo() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  console.log(state);
+
   // useState -> [state, setState]
   const [todos, setTodos] = useState([]);
   const inputRef = useRef(null);
-  // DependencyList is null exec once
-  // useEffect(() => {
-  //   // fetch api
-  //   // initialize connection
-  //   console.log("useEffect");
-  // }, []);
-
-  // without DependencyList exec each time state changes
-  // useEffect(() => {
-  //   // check size of a container
-  //   console.log("useEffect");
-  // });
-
-  useEffect(() => {
-    const getTodos = () => {
-      fetch("https://rickandmortyapi.com/api/character")
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
-    };
-    getTodos();
-  }, []);
 
   // Add a new todo
   const addTodo = () => {
     const todoValue = inputRef.current.value;
 
     const newTodo = { name: todoValue, id: uuidv4(), checked: false };
-    console.log("before", todos);
-    setTodos([newTodo, ...todos]);
-    console.log("after", todos);
+    dispatch({ type: "ADD_TODO", newTodo });
     inputRef.current.value = "";
   };
 
@@ -72,7 +70,7 @@ function Todo() {
         </button>
       </div>
       <ul className="flex flex-col gap-2">
-        {todos.map((item) => {
+        {state.todos.map((item) => {
           return (
             <ListItem
               key={item.id}
